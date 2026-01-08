@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Kasra Imaging Center | Radiology & Sonography in Tabriz رادیولوژی و سونوگرافی کسری</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
   <meta name="description" content="مرکز تخصصی رادیولوژی و سونوگرافی کسری در تبریز. Kasra Imaging Center: Advanced radiology, sonography & medical diagnostics in Tabriz. خدمات تحت نظارت دکتر سعید جعفری پارسا و دکتر جعفر بیگ‌زالی. Expert care by Dr. Saeid Jafari Parsa & Dr. Jafar Beigzali." />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -185,14 +187,9 @@
       margin: 20px auto;
       transition: all 0.3s ease;
     }
-    
-    /* Different border colors for each doctor */
-    .doctor-card:first-child .doctor-image {
-      border-color: var(--secondary); /* Blue for Dr. Parsa */
-    }
-    
-    .doctor-card:last-child .doctor-image {
-      border-color: var(--accent); /* Green for Dr. Beigzali */
+
+    .doctor-image {
+      border-color: var(--secondary); /* Blue for both doctors */
     }
     
     .doctor-card:hover .doctor-image {
@@ -377,6 +374,105 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
       }
+
+      /* Hide hamburger button on desktop */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 40px;
+  left: 20px;
+  z-index: 1001;
+  background: #1a2530;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* Navigation styles */
+nav {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.nav-item {
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+  background: #f5f5f5;
+  color: #1a2530;
+}
+
+.nav-item i {
+  font-size: 18px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+  
+  .nav-container {
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    transition: right 0.3s ease-in-out;
+    padding-top: 60px;
+  }
+  
+  .nav-container.active {
+    right: 0;
+  }
+  
+  .nav-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    justify-content: flex-start;
+  }
+  
+  /* Optional: Overlay background when menu is open */
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+  }
+  
+  .nav-overlay.active {
+    display: block;
+  }
+}
       
       /* For responsive design */
       @media (max-width: 768px) {
@@ -393,7 +489,7 @@
     <div class="header-container">
       <div class="logo">
         <div style="display: flex; align-items: center; gap: 15px;">
-          <img src="images/KasraLogo.jpeg" alt="Kasra Logo" style="width: 80px; height: 60px; border-radius: 8px; object-fit: cover;">
+          <img src="static/images/KasraLogo.jpeg" alt="Kasra Logo" style="width: 80px; height: 60px; border-radius: 8px; object-fit: cover;">
           <h1 id="site-title">مرکز تخصصی رادیولوژی و سونوگرافی کسری</h1>
         </div>
     </div>
@@ -404,8 +500,16 @@
   </header>
 
   <!-- Navigation -->
-  <nav>
+  <button class="hamburger" id="hamburger">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <nav id="nav">
     <div class="nav-container">
+      <a href="#" class="nav-item" data-fa="خانه" data-en="Home">
+        <i class="fas fa-home"></i>
+        <span>خانه</span>
+      </a>
       <a href="#doctors" class="nav-item" data-fa="پزشکان" data-en="Doctors">
         <i class="fas fa-user-md"></i>
         <span>پزشکان</span>
@@ -436,27 +540,7 @@
       <div class="doctors-grid">
         <!-- Doctor 1 -->
         <div class="doctor-card">
-          <img src="images/parsa.jpg" alt="Dr. Saeid Jafari Parsa" class="doctor-image">
-          <div class="doctor-info">
-            <h3 class="doctor-name" data-fa="دکتر سعید جعفری پارسا" data-en="Dr. Saeid Jafari Parsa">دکتر سعید جعفری پارسا</h3>
-            <span class="doctor-title" data-fa="متخصص رادیولوژی و سونوگرافی" data-en="Radiology & Sonography Specialist">متخصص رادیولوژی و سونوگرافی</span>
-            <div class="doctor-details">
-              <p data-fa="متخصص رادیولوژی و سونوگرافی تشخیصی از دانشگاه علوم پزشکی تبریز با ۲۸ سال سابقه در تصویر برداری پزشکی" 
-                 data-en="Specialist in Radiology and Diagnostic Sonography from Tabriz University of Medical Sciences. 28 years of experience in medical imaging.">
-                 متخصص رادیولوژی و سونوگرافی تشخیصی از دانشگاه علوم پزشکی تبریز با ۲۸ سال سابقه در تصویر برداری پزشکی
-              </p>
-              <p style="margin-top: 10px;">
-                <strong data-fa="ساعات کاری:" data-en="Working Hours:">ساعات کاری:</strong> 
-                <span data-fa="شنبه تا چهارشنبه: ۸:۳۰ صبح تا ۸:۳۰ شب٬" data-en="Saturday to Wednesday: 8:30AM to 8:30PM, "> شنبه تا چهارشنبه: ۸:۳۰ صبح تا ۸:۳۰ شب٬</span>
-                <span data-fa="پنجشنبه: ۸:۳۰ صبح تا ۲:۳۰ بعدازظهر" data-en="Thursday: 8:30AM to 2:30PM">پنجشنبه: ۸:۳۰ صبح تا ۲:۳۰ بعدازظهر</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Doctor 2 -->
-        <div class="doctor-card">
-          <img src="images/beigzali.jpg" alt="Dr. Jafar Beigzali" class="doctor-image">
+          <img src="static/images/beigzali.jpg" alt="Dr. Jafar Beigzali" class="doctor-image">
           <div class="doctor-info">
             <h3 class="doctor-name" data-fa="دکتر جعفر بیگ‌زالی" data-en="Dr. Jafar Beigzali">دکتر جعفر بیگ‌زالی</h3>
             <span class="doctor-title" data-fa="متخصص رادیولوژی و سونوگرافی" data-en="Radiology & Sonography Specialist">متخصص رادیولوژی و سونوگرافی</span>
@@ -468,6 +552,26 @@
               <p style="margin-top: 10px;">
                 <strong data-fa="ساعات کاری:" data-en="Working Hours:">ساعات کاری:</strong> 
                 <span data-fa="شنبه تا چهارشنبه: ۸:۳۰ صبح تا ۸:۳۰ شب٬" data-en="Saturday to Wednesday: 8:30AM to 8:30PM, ">شنبه تا چهارشنبه: ۸:۳۰ صبح تا ۸:۳۰ شب٬ </span>
+                <span data-fa="پنجشنبه: ۸:۳۰ صبح تا ۲:۳۰ بعدازظهر" data-en="Thursday: 8:30AM to 2:30PM">پنجشنبه: ۸:۳۰ صبح تا ۲:۳۰ بعدازظهر</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctor 2 -->
+        <div class="doctor-card">
+          <img src="static/images/parsa.jpg" alt="Dr. Saeid Jafari Parsa" class="doctor-image">
+          <div class="doctor-info">
+            <h3 class="doctor-name" data-fa="دکتر سعید جعفری پارسا" data-en="Dr. Saeid Jafari Parsa">دکتر سعید جعفری پارسا</h3>
+            <span class="doctor-title" data-fa="متخصص رادیولوژی و سونوگرافی" data-en="Radiology & Sonography Specialist">متخصص رادیولوژی و سونوگرافی</span>
+            <div class="doctor-details">
+              <p data-fa="متخصص رادیولوژی و سونوگرافی تشخیصی از دانشگاه علوم پزشکی تبریز با ۲۸ سال سابقه در تصویر برداری پزشکی" 
+                 data-en="Specialist in Radiology and Diagnostic Sonography from Tabriz University of Medical Sciences. 28 years of experience in medical imaging.">
+                 متخصص رادیولوژی و سونوگرافی تشخیصی از دانشگاه علوم پزشکی تبریز با ۲۸ سال سابقه در تصویر برداری پزشکی
+              </p>
+              <p style="margin-top: 10px;">
+                <strong data-fa="ساعات کاری:" data-en="Working Hours:">ساعات کاری:</strong> 
+                <span data-fa="شنبه تا چهارشنبه: ۸:۳۰ صبح تا ۸:۳۰ شب٬" data-en="Saturday to Wednesday: 8:30AM to 8:30PM, "> شنبه تا چهارشنبه: ۸:۳۰ صبح تا ۸:۳۰ شب٬</span>
                 <span data-fa="پنجشنبه: ۸:۳۰ صبح تا ۲:۳۰ بعدازظهر" data-en="Thursday: 8:30AM to 2:30PM">پنجشنبه: ۸:۳۰ صبح تا ۲:۳۰ بعدازظهر</span>
               </p>
             </div>
@@ -549,7 +653,7 @@
         <!-- Service 1: Radiology -->
         <div class="service-card" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
           <div style="width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-              <img src="images/radiology.webp" alt="Radiology Services" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="static/images/radiology.webp" alt="Radiology Services" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
             <div style="padding: 1.5rem;">
             <h3 style="color: var(--primary); margin-bottom: 10px;" data-fa="رادیولوژی دیجیتال" data-en="Digital Radiology">رادیولوژی دیجیتال</h3>
@@ -569,7 +673,7 @@
         <!-- Service 2: Sonography -->
         <div class="service-card" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
             <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #1abc9c, #16a085); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-              <img src="images/sonography-banner.webp" alt="Sonography Services" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="static/images/sonography-banner.webp" alt="Sonography Services" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div style="padding: 1.5rem;">
             <h3 style="color: var(--primary); margin-bottom: 10px;" data-fa="سونوگرافی" data-en="Sonography">سونوگرافی</h3>
@@ -587,7 +691,7 @@
         <!-- Service 3: Sonography 2 -->
         <div class="service-card" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
           <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #1abc9c, #16a085); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-            <img src="images/fetus.jpg" alt="Sonography Services" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="static/images/fetus.jpg" alt="Sonography Services" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           <div style="padding: 1.5rem;">
           <h3 style="color: var(--primary); margin-bottom: 10px;" data-fa="سونوگرافی بارداری" data-en="Pregnancy Sonography">سونوگرافی بارداری</h3>
@@ -602,7 +706,7 @@
         <!-- Service 4: Mammography -->
         <div class="service-card" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
             <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #e84393, #fd79a8); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-              <img src="images/mammography.jpg" alt="Mammography Services" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="static/images/mammography.jpg" alt="Mammography Services" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div style="padding: 1.5rem;">
             <h3 style="color: var(--primary); margin-bottom: 10px;" data-fa="ماموگرافی" data-en="Mammography">ماموگرافی</h3>
@@ -642,6 +746,7 @@
     <div class="footer-content">
       <div class="footer-section">
         <h3 data-fa="مرکز رادیولوژی کسری" data-en="Kasra Imaging Center">مرکز رادیولوژی کسری</h3>
+        <img src="static/images/KasraLogo.jpeg" alt="Kasra Logo" style="width: 120px; height: 90px; border-radius: 8px; object-fit: cover;">
       </div>
       <div class="footer-section">
         <h3 data-fa="خدمات" data-en="Services">خدمات</h3>
@@ -721,6 +826,65 @@
         });
       });
     });
+
+    // Toggle hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const nav = document.querySelector('.nav-container');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      hamburger.classList.toggle('active');
+      
+      // Optional: Change hamburger icon when active
+      const icon = hamburger.querySelector('i');
+      if (nav.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Close menu when clicking on a nav item (on mobile)
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          nav.classList.remove('active');
+          hamburger.classList.remove('active');
+          const icon = hamburger.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    });
+
+    // Close menu when clicking outside (optional)
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && 
+          !nav.contains(e.target) && 
+          !hamburger.contains(e.target) &&
+          nav.classList.contains('active')) {
+        nav.classList.remove('active');
+        hamburger.classList.remove('active');
+        const icon = hamburger.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Close menu on window resize if switching to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && nav.classList.contains('active')) {
+        nav.classList.remove('active');
+        hamburger.classList.remove('active');
+        const icon = hamburger.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
   </script>
 
   <script type="application/ld+json">
