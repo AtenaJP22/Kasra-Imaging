@@ -56,6 +56,7 @@
       align-items: center;
       max-width: 1400px;
       margin: 0 auto;
+      margin-top: 20px;
     }
 
     .logo {
@@ -379,10 +380,10 @@
 .hamburger {
   display: none;
   position: fixed;
-  top: 40px;
+  top: 50px;
   left: 20px;
   z-index: 1001;
-  background: #1a2530;
+  background: #365393;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -479,6 +480,62 @@ nav {
         .services-grid {
           grid-template-columns: 1fr !important;
         }
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Header shrinking styles */
+      header {
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+      }
+      
+      .header-container {
+        margin-top: 10px;
+        transition: all 0.3s ease;
+      }
+      
+      .logo img {
+        height: 45px;
+        transition: all 0.3s ease;
+      }
+      
+      .logo h1 {
+        font-size: 1.4rem;
+        transition: all 0.3s ease;
+      }
+      
+      .language-toggle {
+        transition: all 0.3s ease;
+      }
+      
+      /* Add this for when header is shrunk */
+      header.shrink {
+        padding: 0.3rem 1rem;
+      }
+      
+      header.shrink .header-container {
+        margin-top: 5px;
+      }
+      
+      header.shrink .logo img {
+        height: 35px;
+      }
+      
+      header.shrink .logo h1 {
+        font-size: 1.1rem;
+      }
+      
+      header.shrink .lang-btn {
+        padding: 6px 15px;
+        font-size: 0.9rem;
+      }
+      
+      /* For navigation */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 999;
       }
     }
   </style>
@@ -933,5 +990,44 @@ nav {
       ]
     }
   </script>
+
+  <script>
+    // Simple header shrinking on scroll
+    const header = document.querySelector('header');
+    const shrinkBreakpoint = 768;
+    
+    window.addEventListener('scroll', function() {
+      if (window.innerWidth <= shrinkBreakpoint) {
+        if (window.pageYOffset > 30) {
+          header.classList.add('shrink');
+        } else {
+          header.classList.remove('shrink');
+        }
+      }
+    });
+    
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > shrinkBreakpoint) {
+        header.classList.remove('shrink');
+      }
+    });
+    
+    // Your existing language switch function
+    function switchLanguage(lang) {
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      if (lang === 'en') {
+        document.body.dir = 'ltr';
+        document.getElementById('site-title').textContent = 'Kasra Imaging Center | Radiology & Sonography';
+      } else {
+        document.body.dir = 'rtl';
+        document.getElementById('site-title').textContent = 'مرکز تخصصی رادیولوژی و سونوگرافی کسری';
+      }
+    }
+  </script>
+
 </body>
 </html>
