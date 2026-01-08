@@ -380,7 +380,7 @@
 .hamburger {
   display: none;
   position: fixed;
-  top: 50px;
+  top: 90px;
   left: 20px;
   z-index: 1001;
   background: #365393;
@@ -1012,21 +1012,6 @@ nav {
       }
     });
     
-    // Your existing language switch function
-    function switchLanguage(lang) {
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-      
-      if (lang === 'en') {
-        document.body.dir = 'ltr';
-        document.getElementById('site-title').textContent = 'Kasra Imaging Center | Radiology & Sonography';
-      } else {
-        document.body.dir = 'rtl';
-        document.getElementById('site-title').textContent = 'مرکز تخصصی رادیولوژی و سونوگرافی کسری';
-      }
-    }
   </script>
 
 </body>
